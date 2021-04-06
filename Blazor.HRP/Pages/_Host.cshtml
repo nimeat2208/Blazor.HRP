@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
 </head>
-<body>
+@*<body>
     <app>
         <component type="typeof(App)" render-mode="ServerPrerendered" />
     </app>
@@ -30,6 +30,14 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+    <script src="_framework/blazor.server.js"></script>
+</body>*@
+
+<body id="page-top">
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
 
     <script src="_framework/blazor.server.js"></script>
 </body>
