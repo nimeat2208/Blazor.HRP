@@ -3,38 +3,55 @@
 @using Blazor.HRP.Data
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<h1 class="h3 mb-2 text-gray-800">Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p class="mb-4">This component demonstrates fetching data from a service.</p>
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
+
+            @if (forecasts == null)
             {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
+                <p><em>Loading...</em></p>
             }
-        </tbody>
-    </table>
-}
+            else
+            {
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Temp. (C)</th>
+                            <th>Temp. (F)</th>
+                            <th>Summary</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Date</th>
+                            <th>Temp. (C)</th>
+                            <th>Temp. (F)</th>
+                            <th>Summary</th>
+                        </tr>
+                    </tfoot>
+
+                    <tbody>
+                        @foreach (var forecast in forecasts)
+                        {
+                            <tr>
+                                <td>@forecast.Date.ToShortDateString()</td>
+                                <td>@forecast.TemperatureC</td>
+                                <td>@forecast.TemperatureF</td>
+                                <td>@forecast.Summary</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+</div>
 
 @code {
     private WeatherForecast[] forecasts;

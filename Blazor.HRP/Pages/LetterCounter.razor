@@ -1,0 +1,59 @@
+﻿@page "/lettercounter"
+
+@inject IJSRuntime jsRuntime
+
+    <h1 class="h3 mb-2 text-gray-800">Letter Counter</h1>
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <textarea @bind="desc" @bind:event="oninput" placeholder="Please Enter Text" id="txtAreaDesc" class="form-control" rows="15"></textarea>
+
+            <p>@(letterCount) byte</p>
+            <p>Including spaces</p><input type="checkbox" @bind="includedBlank" />
+
+            <button class="btn btn-primary" @onclick="ClearText">Clear</button>
+            <button class="btn btn-primary" @onclick="CopyToClipboard">Copy</button>
+        </div>
+    </div>
+
+    @code {
+        private string desc { get; set; } = string.Empty;
+
+        private int letterCount => GetLetterCount();
+
+        private bool includedBlank { get; set; } = true;
+
+        private int GetLetterCount()
+        {
+
+            int blankCnt = includedBlank == true ? Regex.Matches(desc, @"[\r\n\t\f ]", RegexOptions.IgnorePatternWhitespace).Count : 0;
+
+            int koreanCnt = Regex.Matches(desc, @"[ㄱ-ㅎ가-힣]", RegexOptions.IgnorePatternWhitespace).Count;
+
+            int englishCnt = Regex.Matches(desc, @"[a-zA-Z]", RegexOptions.IgnorePatternWhitespace).Count;
+
+            int numberCnt = Regex.Matches(desc, @"[0-9]", RegexOptions.IgnorePatternWhitespace).Count;
+
+            return (koreanCnt * 2) + englishCnt + numberCnt + blankCnt;
+        }
+
+        private void ClearText()
+        {
+            desc = string.Empty;
+        }
+
+        private async Task CopyToClipboard()
+        {
+            try
+            {
+                await jsRuntime.InvokeVoidAsync("onFocus", "txtAreaDesc");
+                await jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", desc);
+            }
+            catch
+            {
+                Console.WriteLine("Cannot write text to clipboard");
+            }
+        }
+
+    }
